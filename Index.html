@@ -5,25 +5,30 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <title>Custom Hitster</title>
   <style>
-    body { background: #121212; color: #ffffff; font-family: sans-serif; margin: 0; height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-    #start-screen, #countdown-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; width: 100%; height: 100%; }
+    body { background: #121212; color: #ffffff; font-family: sans-serif; margin: 0; height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+    .screen { display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100%; }
     .hidden { display: none !important; }
-    button { background: #1DB954; color: white; border: none; padding: 25px 50px; font-size: 1.5rem; border-radius: 50px; cursor: pointer; font-weight: bold; box-shadow: 0 4px 15px rgba(29, 185, 84, 0.4); }
+    button { background: #1DB954; color: white; border: none; padding: 25px 50px; font-size: 1.5rem; border-radius: 50px; cursor: pointer; font-weight: bold; box-shadow: 0 4px 15px rgba(29, 185, 84, 0.4); margin-top: 30px; }
     button:active { transform: scale(0.95); }
     h1 { font-size: 5rem; margin: 0; color: #1DB954; }
+    h2 { font-size: 3rem; margin: 10px 0; color: #ffffff; }
+    h3 { font-size: 2rem; margin: 10px 0; color: #b3b3b3; }
+    .year { font-size: 4rem; color: #1DB954; font-weight: bold; margin-top: 20px; }
     p { font-size: 1.5rem; color: #b3b3b3; margin-top: 20px; }
   </style>
 </head>
 <body>
 
-  <!-- Startbildschirm -->
-  <div id="start-screen">
-    <button id="draw-btn">Neue Karte ziehen</button>
-    <p>Handy danach sofort umdrehen!</p>
+  <!-- Song-Info-Bildschirm (Startbildschirm) -->
+  <div id="song-screen" class="screen">
+    <h3 id="artist-display">Interpret</h3>
+    <h2 id="title-display">Titel</h2>
+    <div class="year" id="year-display">1900</div>
+    <button id="next-btn">Nächster Song</button>
   </div>
 
   <!-- Countdown-Bildschirm -->
-  <div id="countdown-screen" class="hidden">
+  <div id="countdown-screen" class="screen hidden">
     <h1 id="timer">3</h1>
     <p>Jetzt umdrehen!</p>
   </div>
@@ -36,23 +41,37 @@
       { uri: "spotify:track:4cOdK2wGLETKBW3PvgPWqT", artist: "Rick Astley", title: "Never Gonna Give You Up", year: "1987" }
     ];
 
-    const startScreen = document.getElementById('start-screen');
+    const songScreen = document.getElementById('song-screen');
     const countdownScreen = document.getElementById('countdown-screen');
     const timerElement = document.getElementById('timer');
-    const drawBtn = document.getElementById('draw-btn');
+    const nextBtn = document.getElementById('next-btn');
+    
+    const artistDisplay = document.getElementById('artist-display');
+    const titleDisplay = document.getElementById('title-display');
+    const yearDisplay = document.getElementById('year-display');
 
-    drawBtn.addEventListener('click', () => {
-      // 1. Zufälligen Song auswählen
-      const song = songDB[Math.floor(Math.random() * songDB.length)];
-      
-      // 2. Ansicht auf schwarzen Countdown wechseln
-      startScreen.classList.add('hidden');
+    let currentSong = null;
+
+    // Wählt einen zufälligen Song aus und zeigt ihn an
+    function pickNewSong() {
+      currentSong = songDB[Math.floor(Math.random() * songDB.length)];
+      artistDisplay.innerText = currentSong.artist;
+      titleDisplay.innerText = currentSong.title;
+      yearDisplay.innerText = currentSong.year;
+    }
+
+    // Beim Laden der App direkt den ersten Song anzeigen
+    pickNewSong();
+
+    nextBtn.addEventListener('click', () => {
+      // 1. Ansicht auf Countdown wechseln
+      songScreen.classList.add('hidden');
       countdownScreen.classList.remove('hidden');
       
       let timeLeft = 3;
       timerElement.innerText = timeLeft;
 
-      // 3. Countdown herunterzählen
+      // 2. Countdown herunterzählen
       const countdown = setInterval(() => {
         timeLeft--;
         if (timeLeft > 0) {
@@ -60,14 +79,14 @@
         } else {
           clearInterval(countdown);
           
-          // 4. Deep-Link feuert, Betriebssystem öffnet native Spotify App
-          window.location.href = song.uri;
+          // 3. Deep-Link feuert, Spotify öffnet sich
+          window.location.href = currentSong.uri;
           
-          // 5. Nach einer Sekunde (während Spotify im Vordergrund ist) 
-          // baut die Web-App im Hintergrund wieder den Startbildschirm auf
+          // 4. Nach einer Sekunde zurückwechseln und direkt den NÄCHSTEN Song vorbereiten
           setTimeout(() => {
             countdownScreen.classList.add('hidden');
-            startScreen.classList.remove('hidden');
+            songScreen.classList.remove('hidden');
+            pickNewSong(); // Neuen Song für die nächste Runde laden
           }, 1000);
         }
       }, 1000);
