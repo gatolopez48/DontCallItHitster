@@ -1,5 +1,582 @@
 [
   { "uri": "spotify:track:3z8h0TU7ReDPLIbEnYhWZb", "artist": "Queen", "title": "Bohemian Rhapsody", "year": "1975" },
   { "uri": "spotify:track:6rqhFgbbKwnb9MLmUQDhG6", "artist": "Michael Jackson", "title": "Billie Jean", "year": "1982" },
-  { "uri": "spotify:track:4cOdK2wGLETKBW3PvgPWqT", "artist": "Rick Astley", "title": "Never Gonna Give You Up", "year": "1987" }
+  { "uri": "spotify:track:4cOdK2wGLETKBW3PvgPWqT", "artist": "Rick Astley", "title": "Never Gonna Give You Up", "year": "1987" },
+  {
+    "uri": "spotify:track:1NT7CmUCfsk3K76UsVBdrW",
+    "artist": "Fleshgod Apocalypse",
+    "title": "Thru Our Scars",
+    "year": "2010"
+  },
+  {
+    "uri": "spotify:track:3AHm9YdMDhM9PKFqkHmb98",
+    "artist": "Behemoth",
+    "title": "Demigod",
+    "year": "2004"
+  },
+  {
+    "uri": "spotify:track:5V3mdRI2yQxbSsJGDPc5lD",
+    "artist": "System Of A Down",
+    "title": "Chop Suey!",
+    "year": "2001"
+  },
+  {
+    "uri": "spotify:track:7MeXwzhSDGfqNfuFANgzVC",
+    "artist": "System Of A Down",
+    "title": "Toxicity",
+    "year": "2001"
+  },
+  {
+    "uri": "spotify:track:62HfQvVA9UQ1tfKAW1S8Bn",
+    "artist": "Wintersun",
+    "title": "Winter Madness",
+    "year": "2004"
+  },
+  {
+    "uri": "spotify:track:3H0pAWafR3m9IXzIqJ16jV",
+    "artist": "Wintersun",
+    "title": "Death And The Healing",
+    "year": "2004"
+  },
+  {
+    "uri": "spotify:track:2wz7AsHWwJU3wfmGiOiKoa",
+    "artist": "Sabaton",
+    "title": "Primo Victoria",
+    "year": "2010"
+  },
+  {
+    "uri": "spotify:track:4K0hpCbHDEi3LAQTV5M8In",
+    "artist": "Sabaton",
+    "title": "Into The Fire",
+    "year": "2010"
+  },
+  {
+    "uri": "spotify:track:4T0OluPLBaXZwA4QS26sb6",
+    "artist": "The Agonist",
+    "title": "Mass of the Earth",
+    "year": "2012"
+  },
+  {
+    "uri": "spotify:track:7JJjf6lLjA7Ad442OaGQuP",
+    "artist": "The Agonist",
+    "title": "You're Coming With Me",
+    "year": "2012"
+  },
+  {
+    "uri": "spotify:track:4tj9pbkeaQXjmif5iCW5OG",
+    "artist": "Alestorm",
+    "title": "Back Through Time",
+    "year": "2011"
+  },
+  {
+    "uri": "spotify:track:2zvGVJEFbXjWJCqAftyXGh",
+    "artist": "Alestorm",
+    "title": "Death Throes Of The Terrorsquid",
+    "year": "2011"
+  },
+  {
+    "uri": "spotify:track:3StIB1iiFQRFJRVBkNigfF",
+    "artist": "Alestorm",
+    "title": "The Quest",
+    "year": "2009"
+  },
+  {
+    "uri": "spotify:track:0GPErTOWivSx5biNCbw4OL",
+    "artist": "Children Of Bodom",
+    "title": "Downfall",
+    "year": "2008"
+  },
+  {
+    "uri": "spotify:track:6o31Muzx8TVn4qe5zvdoic",
+    "artist": "Children Of Bodom",
+    "title": "Hatebreeder",
+    "year": "2008"
+  },
+  {
+    "uri": "spotify:track:6VhYnPdmhTqXiGFRYAAgIC",
+    "artist": "Cradle Of Filth",
+    "title": "Honey and Sulphur",
+    "year": "2008"
+  },
+  {
+    "uri": "spotify:track:15fclimRjk5ztcJMP7YAvm",
+    "artist": "Cradle Of Filth",
+    "title": "Cthulhu Dawn",
+    "year": "2000"
+  },
+  {
+    "uri": "spotify:track:0OYKn36s7AKsZgSkwX1vtP",
+    "artist": "Death",
+    "title": "Without Judgement",
+    "year": "1995"
+  },
+  {
+    "uri": "spotify:track:1n1OAL9sl46kemH4j7vtvo",
+    "artist": "Dimmu Borgir",
+    "title": "Progenies Of The Great Apocalypse",
+    "year": "2003"
+  },
+  {
+    "uri": "spotify:track:4lX5msKgdyx5FCbziLpQEs",
+    "artist": "Dimmu Borgir",
+    "title": "Vredesbyrd",
+    "year": "2003"
+  },
+  {
+    "uri": "spotify:track:07iAPFjs4UG1qK1BxHavw7",
+    "artist": "Disillusion",
+    "title": "And The Mirror Cracked",
+    "year": "2004"
+  },
+  {
+    "uri": "spotify:track:2yvpvuOmc4pE9jU5UOoEr5",
+    "artist": "Disillusion",
+    "title": "Alone I Stand In Fires",
+    "year": "2004"
+  },
+  {
+    "uri": "spotify:track:4SYbPPrvURsnRKpdLEsaJs",
+    "artist": "Disillusion",
+    "title": "The Black Sea",
+    "year": "2006"
+  },
+  {
+    "uri": "spotify:track:3yc7HQzCGVZxVaLRCPhS6O",
+    "artist": "Disillusion",
+    "title": "The Hole We Are In",
+    "year": "2006"
+  },
+  {
+    "uri": "spotify:track:6c1hKkBNxNOL7Nv8kINyas",
+    "artist": "Ensiferum",
+    "title": "Axe of Judgement",
+    "year": "2015"
+  },
+  {
+    "uri": "spotify:track:7fWhkCzm5g2EYZgjrrGJKT",
+    "artist": "Finntroll",
+    "title": "Solsagan",
+    "year": "2010"
+  },
+  {
+    "uri": "spotify:track:76n6nTGl9uYZ7XxHFNOxf6",
+    "artist": "Fleshgod Apocalypse",
+    "title": "The Violation",
+    "year": "2011"
+  },
+  {
+    "uri": "spotify:track:1VqRVLTuU7FdlwauUs5usH",
+    "artist": "Fleshgod Apocalypse",
+    "title": "The Fool",
+    "year": "2016"
+  },
+  {
+    "uri": "spotify:track:57flO9gUw4OnGA69XPWdgE",
+    "artist": "Fleshgod Apocalypse",
+    "title": "Gravity",
+    "year": "2016"
+  },
+  {
+    "uri": "spotify:track:1TVl1xX5tpNnm0JDuYGfux",
+    "artist": "Fleshgod Apocalypse",
+    "title": "Under Black Sails",
+    "year": "2013"
+  },
+  {
+    "uri": "spotify:track:4ewQrSaNUxhhCyLBG1KaLj",
+    "artist": "Fleshgod Apocalypse",
+    "title": "In Honour of Reason",
+    "year": "2009"
+  },
+  {
+    "uri": "spotify:track:6nAIqP2mS2PudzxmBQd43c",
+    "artist": "Machine Head",
+    "title": "This Is the End",
+    "year": "2011"
+  },
+  {
+    "uri": "spotify:track:30azggKYlwo666J7ICWyD4",
+    "artist": "Metallica",
+    "title": "Dyers Eve",
+    "year": "1988"
+  },
+  {
+    "uri": "spotify:track:6NwbeybX6TDtXlpXvnUOZC",
+    "artist": "Metallica",
+    "title": "Master Of Puppets",
+    "year": "1986"
+  },
+  {
+    "uri": "spotify:track:2ZUUturolW3VpzXWzPEy2X",
+    "artist": "Powerwolf",
+    "title": "Sanctified with Dynamite",
+    "year": "2011"
+  },
+  {
+    "uri": "spotify:track:4Jksa5cmvZ2QwTAqnQsmFk",
+    "artist": "Rage",
+    "title": "Carved In Stone",
+    "year": "2009"
+  },
+  {
+    "uri": "spotify:track:1fsjNbPFGuR7hK6euWuHd4",
+    "artist": "Rage",
+    "title": "Set This World on Fire",
+    "year": "2002"
+  },
+  {
+    "uri": "spotify:track:1zkfSrsq0xtPxJtODOF55n",
+    "artist": "Septicflesh",
+    "title": "The Vampire from Nazareth",
+    "year": "2011"
+  },
+  {
+    "uri": "spotify:track:4GGfmny5RBun2tQLlXkWfR",
+    "artist": "Behemoth",
+    "title": "The Satanist",
+    "year": "2014"
+  },
+  {
+    "uri": "spotify:track:5vBPJZeuunS1KQv7Y5dJjR",
+    "artist": "Behemoth",
+    "title": "The Seed Ov I",
+    "year": "2009"
+  },
+  {
+    "uri": "spotify:track:0z2oCaVK0CeMdE7KQES0SR",
+    "artist": "Behemoth",
+    "title": "Ov Fire And The Void",
+    "year": "2009"
+  },
+  {
+    "uri": "spotify:track:5OjikWoeVs69UUe0VVx3b3",
+    "artist": "HammerFall",
+    "title": "Heeding The Call - 1998 Version",
+    "year": "1998"
+  },
+  {
+    "uri": "spotify:track:2oCy2qUL6GJihlYwQYJ952",
+    "artist": "HammerFall",
+    "title": "On The Edge Of Honour",
+    "year": "2002"
+  },
+  {
+    "uri": "spotify:track:0sqGxPoqpS31Bi1Dx1MQoz",
+    "artist": "Dark Tranquillity",
+    "title": "Focus Shift",
+    "year": "2007"
+  },
+  {
+    "uri": "spotify:track:5P54xHPHarH4evIw1XmjMm",
+    "artist": "Dark Tranquillity",
+    "title": "Shadow In Our Blood",
+    "year": "2010"
+  },
+  {
+    "uri": "spotify:track:0tZ3mElWcr74OOhKEiNz1x",
+    "artist": "Rage Against The Machine",
+    "title": "Bulls On Parade",
+    "year": "1996"
+  },
+  {
+    "uri": "spotify:track:1wsRitfRRtWyEapl0q22o8",
+    "artist": "Rage Against The Machine",
+    "title": "Guerrilla Radio",
+    "year": "1999"
+  },
+  {
+    "uri": "spotify:track:0sObxZUKqdPfgjG9ahSlP5",
+    "artist": "Amon Amarth",
+    "title": "The Pursuit of Vikings",
+    "year": "2004"
+  },
+  {
+    "uri": "spotify:track:5u3l2TONYacJgmRPQVaF9y",
+    "artist": "Amon Amarth",
+    "title": "Twilight Of The Thunder God",
+    "year": "2008"
+  },
+  {
+    "uri": "spotify:track:3jiTk0zbsLAZOVzOzdYuwI",
+    "artist": "Kreator",
+    "title": "Violent Revolution",
+    "year": "2001"
+  },
+  {
+    "uri": "spotify:track:7hhN33zVkVZrtrKmK69Xzp",
+    "artist": "Kreator",
+    "title": "The Few, The Proud, The Broken",
+    "year": "2012"
+  },
+  {
+    "uri": "spotify:track:6i4SetUb6uRIYeFSx4I2wg",
+    "artist": "Kreator",
+    "title": "Demon Prince",
+    "year": "2009"
+  },
+  {
+    "uri": "spotify:track:12Y73AQEjYzhQp6lRLzyLq",
+    "artist": "Vader",
+    "title": "This Is The War",
+    "year": "2005"
+  },
+  {
+    "uri": "spotify:track:5dF3CaTe3d8hlvKjHxx70I",
+    "artist": "Insomnium",
+    "title": "The Killjoy",
+    "year": "2006"
+  },
+  {
+    "uri": "spotify:track:4T6GcCgq7iX0uKCPGxFMVP",
+    "artist": "Insomnium",
+    "title": "Mortal Share",
+    "year": "2006"
+  },
+  {
+    "uri": "spotify:track:2sSaG1zqBjqnqCV2i2ROnH",
+    "artist": "Whourkr",
+    "title": "Quadruple plis de peau",
+    "year": "2012"
+  },
+  {
+    "uri": "spotify:track:2jrYEvWvU7G3ATn5oHVg4e",
+    "artist": "Behemoth",
+    "title": "Ora Pro Nobis Lucifer",
+    "year": "2014"
+  },
+  {
+    "uri": "spotify:track:0abHvyyQu4s82Vzq4z5vLI",
+    "artist": "Ensiferum",
+    "title": "One Man Army",
+    "year": "2015"
+  },
+  {
+    "uri": "spotify:track:2hSmv6Dx5L55TwddgzdLBu",
+    "artist": "DragonForce",
+    "title": "Through The Fire And Flames",
+    "year": "2016"
+  },
+  {
+    "uri": "spotify:track:6ingqTFIeIhd7jiDt56ArH",
+    "artist": "Death",
+    "title": "Painkiller",
+    "year": "2011"
+  },
+  {
+    "uri": "spotify:track:1vfrwapmlYINkOpUrtfxfS",
+    "artist": "The Agonist",
+    "title": "'And Their Eulogies Sang Me To Sleep",
+    "year": "2009"
+  },
+  {
+    "uri": "spotify:track:5gNyrx8elXaXXs3vFC1ufZ",
+    "artist": "Amon Amarth",
+    "title": "Raise Your Horns",
+    "year": "2016"
+  },
+  {
+    "uri": "spotify:track:4jXbxotJzXszJxc0tmqtTU",
+    "artist": "Kalmah",
+    "title": "Time Takes Us All",
+    "year": "2006"
+  },
+  {
+    "uri": "spotify:track:4Yx9Tw9dTgQ8eGCq3PRDyn",
+    "artist": "Slayer",
+    "title": "Raining Blood",
+    "year": "1986"
+  },
+  {
+    "uri": "spotify:track:2uenkeJMEfGmjebYnewnlE",
+    "artist": "Slayer",
+    "title": "Disciple",
+    "year": "2001"
+  },
+  {
+    "uri": "spotify:track:2jfYVyExxd0j61Qm5TZi6V",
+    "artist": "Slayer",
+    "title": "Seasons In The Abyss",
+    "year": "1990"
+  },
+  {
+    "uri": "spotify:track:2UdXeZUpNbCtLZLlWDZkCr",
+    "artist": "Hypocrisy",
+    "title": "Warpath",
+    "year": "2005"
+  },
+  {
+    "uri": "spotify:track:0WcEYV9i1mrHBD78Fhr4L2",
+    "artist": "Hypocrisy",
+    "title": "New World",
+    "year": "2004"
+  },
+  {
+    "uri": "spotify:track:6vsTQhbn0T0U8JSH0AGJ3D",
+    "artist": "Hypocrisy",
+    "title": "Fractured Millenium",
+    "year": "1999"
+  },
+  {
+    "uri": "spotify:track:4bOX3KfGgQE1GkxxJ3OUtI",
+    "artist": "Insomnium",
+    "title": "Through The Shadow",
+    "year": "2012"
+  },
+  {
+    "uri": "spotify:track:1ZoV0s1rx2tN13PmG1yuIl",
+    "artist": "Obscura",
+    "title": "The Anticosmic Overload",
+    "year": "2009"
+  },
+  {
+    "uri": "spotify:track:1j8D1UmBhzWP06Qb42JRgg",
+    "artist": "Ensiferum",
+    "title": "Ahti",
+    "year": "2007"
+  },
+  {
+    "uri": "spotify:track:4kXwf5pY5R7cQO6wuCO8OA",
+    "artist": "August Burns Red",
+    "title": "Separating The Seas",
+    "year": "2015"
+  },
+  {
+    "uri": "spotify:track:3Q86iOQj39VP4OJ1Eq7uZK",
+    "artist": "In Mourning",
+    "title": "Colossus",
+    "year": "2012"
+  },
+  {
+    "uri": "spotify:track:1oYEtMfhsHf5KNY8si34Nj",
+    "artist": "Allegaeon",
+    "title": "Of Mind and Matrix",
+    "year": "2016"
+  },
+  {
+    "uri": "spotify:track:3J8bxJYj9oywvy0Y8zmxna",
+    "artist": "Devin Townsend Project;Devin Townsend",
+    "title": "Silent Militia",
+    "year": "2014"
+  },
+  {
+    "uri": "spotify:track:54XSxk2k3aIb7Q0yoZb7dN",
+    "artist": "Persefone",
+    "title": "Inner Fullness",
+    "year": "2013"
+  },
+  {
+    "uri": "spotify:track:5ZdVpBEYyr0o0ftkYiPA7G",
+    "artist": "Fallujah",
+    "title": "Scar Queen",
+    "year": "2016"
+  },
+  {
+    "uri": "spotify:track:6V4TIHjP3ye7WI5wgsqaqM",
+    "artist": "Amon Amarth",
+    "title": "Asator",
+    "year": "2006"
+  },
+  {
+    "uri": "spotify:track:7i6UQPAHgqgMGJJK7elUGS",
+    "artist": "Children Of Bodom",
+    "title": "Are You Dead Yet",
+    "year": "2005"
+  },
+  {
+    "uri": "spotify:track:0biI20CGi1smZVixGyfCER",
+    "artist": "Rammstein;Devin Townsend",
+    "title": "Rammlied - RMX By Devin Townsend",
+    "year": "2011"
+  },
+  {
+    "uri": "spotify:track:27uY18LQMMslWedv5Thp9a",
+    "artist": "In Mourning",
+    "title": "Past October Skies (The Black Lodge Revisited)",
+    "year": "2008"
+  },
+  {
+    "uri": "spotify:track:3p9UYWnUy9NVDwg4myCFRe",
+    "artist": "Rotting Christ",
+    "title": "In Yumen / Xibalba",
+    "year": "2013"
+  },
+  {
+    "uri": "spotify:track:5dnlJhiPLUNYCpOJxeka97",
+    "artist": "In Mourning",
+    "title": "For You To Know",
+    "year": "2018"
+  },
+  {
+    "uri": "spotify:track:4qgLNNRBa0xkSUtc5OIuG9",
+    "artist": "Powerwolf",
+    "title": "We Take It from the Living",
+    "year": "2007"
+  },
+  {
+    "uri": "spotify:track:4TbPTxBtR0DW1Vv9VDoBJJ",
+    "artist": "Augury",
+    "title": "Brimstone Landscapes",
+    "year": "2009"
+  },
+  {
+    "uri": "spotify:track:2auGZBF35U0Hx18EzGSVOX",
+    "artist": "Gojira",
+    "title": "Backbone",
+    "year": "2005"
+  },
+  {
+    "uri": "spotify:track:1aPGIT8UXb2lIY2mAy6thH",
+    "artist": "Neorhythm",
+    "title": "Master of Puppets",
+    "year": "2019"
+  },
+  {
+    "uri": "spotify:track:2xzuWZpvZFWSpDlaWjaZp6",
+    "artist": "Beyond Creation",
+    "title": "The Deported",
+    "year": "2011"
+  },
+  {
+    "uri": "spotify:track:7DEjDauyIpn7JPODqRbZo5",
+    "artist": "Cattle Decapitation",
+    "title": "Death Atlas",
+    "year": "2019"
+  },
+  {
+    "uri": "spotify:track:7iMQChXFK33TS49QWhE4tt",
+    "artist": "Gojira",
+    "title": "The art of dying",
+    "year": "2008"
+  },
+  {
+    "uri": "spotify:track:134I0qT6UrkDjhbI6bx0x3",
+    "artist": "Leprous",
+    "title": "The Price",
+    "year": "2015"
+  },
+  {
+    "uri": "spotify:track:3LmcjJ7e4tlRqwYs2VNRq0",
+    "artist": "Orbit Culture",
+    "title": "While We Serve",
+    "year": "2023"
+  },
+  {
+    "uri": "spotify:track:5UpDvqyZnhdWY16L8HY6fw",
+    "artist": "Lorna Shore",
+    "title": "To the Hellfire",
+    "year": "2021"
+  },
+  {
+    "uri": "spotify:track:1pF0MdgFm92mwM7sxJOves",
+    "artist": "Fit For An Autopsy",
+    "title": "Far from Heaven",
+    "year": "2022"
+  },
+  {
+    "uri": "spotify:track:6lAOTJQHNCJI4QhEO7qyqw",
+    "artist": "Lorna Shore",
+    "title": "King Ov Deception",
+    "year": "2020"
+  }
 ]
+  
