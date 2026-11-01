@@ -8,8 +8,9 @@
     body { background: #121212; color: #ffffff; font-family: sans-serif; margin: 0; height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
     .screen { display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100%; }
     .hidden { display: none !important; }
-    button { background: #1DB954; color: white; border: none; padding: 25px 50px; font-size: 1.5rem; border-radius: 50px; cursor: pointer; font-weight: bold; box-shadow: 0 4px 15px rgba(29, 185, 84, 0.4); margin-top: 30px; }
-    button:active { transform: scale(0.95); }
+    button { background: #1DB954; color: white; border: none; padding: 25px 50px; font-size: 1.5rem; border-radius: 50px; cursor: pointer; font-weight: bold; box-shadow: 0 4px 15px rgba(29, 185, 84, 0.4); margin-top: 30px; transition: 0.3s; }
+    button:active:not(:disabled) { transform: scale(0.95); }
+    button:disabled { background: #555; box-shadow: none; cursor: not-allowed; color: #aaa; }
     h1 { font-size: 5rem; margin: 0; color: #1DB954; }
     h2 { font-size: 3rem; margin: 10px 0; color: #ffffff; }
     h3 { font-size: 2rem; margin: 10px 0; color: #b3b3b3; }
@@ -21,7 +22,7 @@
 
   <!-- 1. Startbildschirm -->
   <div id="start-screen" class="screen">
-    <button id="start-btn">Spiel starten</button>
+    <button id="start-btn" disabled>Lade Songs...</button>
     <p>Handy nach Klick sofort umdrehen!</p>
   </div>
 
@@ -41,12 +42,7 @@
   </div>
 
   <script>
-    // Deine lokale Song-Datenbank
-    const songDB = [
-      { uri: "spotify:track:3z8h0TU7ReDPLIbEnYhWZb", artist: "Queen", title: "Bohemian Rhapsody", year: "1975" },
-      { uri: "spotify:track:6rqhFgbbKwnb9MLmUQDhG6", artist: "Michael Jackson", title: "Billie Jean", year: "1982" },
-      { uri: "spotify:track:4cOdK2wGLETKBW3PvgPWqT", artist: "Rick Astley", title: "Never Gonna Give You Up", year: "1987" }
-    ];
+    let songDB = [];
 
     const startScreen = document.getElementById('start-screen');
     const countdownScreen = document.getElementById('countdown-screen');
@@ -60,7 +56,26 @@
     const titleDisplay = document.getElementById('title-display');
     const yearDisplay = document.getElementById('year-display');
 
+    // JSON-Datei laden
+    fetch('songs.json')
+      .then(response => {
+        if (!response.ok) throw new Error("Netzwerkfehler");
+        return response.json();
+      })
+      .then(data => {
+        songDB = data;
+        // Button aktivieren, sobald die Daten da sind
+        startBtn.disabled = false;
+        startBtn.innerText = "Spiel starten";
+      })
+      .catch(error => {
+        console.error("Fehler beim Laden der songs.json:", error);
+        startBtn.innerText = "Fehler beim Laden";
+      });
+
     function startRound() {
+      if (songDB.length === 0) return; // Sicherheitshalber abbrechen, falls leer
+
       // 1. Zufälligen neuen Song auswählen
       const currentSong = songDB[Math.floor(Math.random() * songDB.length)];
       
@@ -97,7 +112,6 @@
       }, 1000);
     }
 
-    // Beide Buttons starten den exakt gleichen Ablauf
     startBtn.addEventListener('click', startRound);
     nextBtn.addEventListener('click', startRound);
   </script>
