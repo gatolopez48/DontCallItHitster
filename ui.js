@@ -1,6 +1,7 @@
 const startScreen = document.getElementById('start-screen');
 const countdownScreen = document.getElementById('countdown-screen');
 const songScreen = document.getElementById('song-screen');
+const settingsScreen = document.getElementById('settings-screen'); // 1. Hier ergänzt!
 
 const timerElement = document.getElementById('timer');
 const startBtn = document.getElementById('start-btn');
@@ -11,9 +12,13 @@ const yearDisplay = document.getElementById('year-display');
 const spotifyBtn = document.getElementById('spotify-btn');
 
 export function showScreen(screenId) {
+  // Alle bekannten Screens ausblenden
   startScreen.classList.add('hidden');
   countdownScreen.classList.add('hidden');
   songScreen.classList.add('hidden');
+  settingsScreen.classList.add('hidden'); // 2. Hier ergänzt!
+  
+  // Gewünschten Screen einblenden
   document.getElementById(screenId).classList.remove('hidden');
 }
 
