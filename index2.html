@@ -14,6 +14,7 @@
     <p>Handy nach Klick sofort umdrehen!</p>
     <div id="status-display" class="status-text">Suche nach songs.json...</div>
     <button id="reset-btn" class="btn-danger">Spiel zurücksetzen</button>
+    <button id="open-settings-btn" class="btn-spotify">⚙️ Einstellungen</button>
   </div>
 
   <!-- 2. Countdown-Bildschirm -->
@@ -34,7 +35,16 @@
     <button id="next-btn">Nächste Karte ziehen</button>
     <p>Handy nach Klick sofort umdrehen!</p>
   </div>
-
+<!-- 4. Einstellungs-Bildschirm -->
+  <div id="settings-screen" class="screen hidden">
+  <h2>Einstellungen</h2>
+  
+  <!-- Hier kommen später deine Filter rein -->
+  <label>Von Jahr: <input type="number" id="setting-start-year" value="1950"></label>
+  <label>Bis Jahr: <input type="number" id="setting-end-year" value="2024"></label>
+  
+  <button id="save-settings-btn">Speichern & Zurück</button>
+  </div>
   <script type="module" src="main.js"></script>
 </body>
 </html>
