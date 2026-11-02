@@ -28,9 +28,10 @@
 
   <!-- 1. Startbildschirm -->
   <div id="start-screen" class="screen">
-    <button id="start-btn">Spiel starten</button>
+    <!-- Button ist anfangs deaktiviert -->
+    <button id="start-btn" disabled>Lade Songs...</button>
     <p>Handy nach Klick sofort umdrehen!</p>
-    <div id="status-display" class="status-text">Geladene Songs: 0</div>
+    <div id="status-display" class="status-text">Suche nach songs.json...</div>
     <button id="reset-btn" class="btn-danger">Spiel zurücksetzen</button>
   </div>
 
@@ -50,29 +51,13 @@
   </div>
 
   <script>
-    // --- 1. DATENBANK ---
-    // Hier kannst du deine Songs im normalen Format einfügen, ohne manuell IDs zu vergeben
-    let songDB = [
-      { artist: "Nena", title: "99 Luftballons", year: 1983 },
-      { artist: "Queen", title: "Bohemian Rhapsody", year: 1975 },
-      { artist: "The Weeknd", title: "Blinding Lights", year: 2019 },
-      { artist: "Nirvana", title: "Smells Like Teen Spirit", year: 1991 },
-      { artist: "Falco", title: "Rock Me Amadeus", year: 1985 }
-    ];
+    // Globale Variablen anlegen (leer starten)
+    let songDB = [];
+    let availableSongs = [];
+    let playedSongIds = [];
+    const STORAGE_KEY = 'customHitsterPlayedSongs';
 
-    // --- 2. AUTOMATISCHE ID-GENERIERUNG ---
-    // Erstellt aus Interpret und Titel eine einzigartige, unveränderliche ID (z.B. "nena99luftballons")
-    songDB = songDB.map(song => {
-      const uniqueId = (song.artist + song.title).toLowerCase().replace(/[^a-z0-9]/g, '');
-      return { 
-        id: uniqueId, 
-        artist: song.artist, 
-        title: song.title, 
-        year: song.year 
-      };
-    });
-
-    // --- 3. DOM-ELEMENTE VERKNÜPFEN ---
+    // --- DOM-ELEMENTE VERKNÜPFEN ---
     const startScreen = document.getElementById('start-screen');
     const countdownScreen = document.getElementById('countdown-screen');
     const songScreen = document.getElementById('song-screen');
@@ -87,26 +72,60 @@
     const yearDisplay = document.getElementById('year-display');
     const statusDisplay = document.getElementById('status-display');
 
-    // --- 4. SPEICHER-LOGIK (LocalStorage) ---
-    const STORAGE_KEY = 'customHitsterPlayedSongs';
-    
-    // Gespielte Song-IDs aus dem Speicher laden (oder leeres Array, falls neu)
-    let playedSongIds = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
-    
-    // Liste der noch verfügbaren Songs filtern
-    let availableSongs = songDB.filter(song => !playedSongIds.includes(song.id));
+    // --- JSON LADEN UND INITIALISIEREN ---
+    async function loadSongsData() {
+      try {
+        // 1. JSON-Datei anfragen
+        const response = await fetch('songs.json');
+        
+        if (!response.ok) {
+          throw new Error('Netzwerk-Fehler oder Datei nicht gefunden');
+        }
+        
+        // 2. Antwort in ein Array umwandeln
+        const rawSongs = await response.json();
 
-    // UI-Update beim Start: Zeige an, wie viele Songs noch übrig sind
-    function updateStatusUI() {
-      statusDisplay.innerText = `Noch ${availableSongs.length} von ${songDB.length} Songs verfügbar`;
-      if (availableSongs.length === 0) {
-        startBtn.disabled = true;
-        startBtn.innerText = "Alle Songs gespielt";
+        // 3. Automatische ID-Generierung anwenden
+        songDB = rawSongs.map(song => {
+          const uniqueId = (song.artist + song.title).toLowerCase().replace(/[^a-z0-9]/g, '');
+          return { 
+            id: uniqueId, 
+            artist: song.artist, 
+            title: song.title, 
+            year: song.year 
+          };
+        });
+
+        // 4. LocalStorage prüfen und filtern
+        playedSongIds = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+        availableSongs = songDB.filter(song => !playedSongIds.includes(song.id));
+
+        // 5. UI aktualisieren & Button freigeben
+        updateStatusUI();
+        
+      } catch (error) {
+        console.error("Fehler beim Laden der JSON:", error);
+        statusDisplay.innerText = "Fehler: songs.json konnte nicht geladen werden.";
+        startBtn.innerText = "Ladefehler";
       }
     }
-    updateStatusUI();
 
-    // --- 5. ABLAUF-LOGIK ---
+    function updateStatusUI() {
+      statusDisplay.innerText = `Noch ${availableSongs.length} von ${songDB.length} Songs verfügbar`;
+      
+      if (availableSongs.length > 0) {
+        startBtn.innerText = "Spiel starten";
+        startBtn.disabled = false; // Button klickbar machen
+      } else {
+        startBtn.innerText = "Alle Songs gespielt";
+        startBtn.disabled = true;
+      }
+    }
+
+    // Direkt beim Start der Seite die Lade-Funktion aufrufen
+    loadSongsData();
+
+    // --- ABLAUF-LOGIK ---
     function showScreen(screenToShow) {
       startScreen.classList.add('hidden');
       countdownScreen.classList.add('hidden');
@@ -137,18 +156,13 @@
     }
 
     function showRandomSong() {
-      // Zufälligen Index aus den noch verfügbaren Songs wählen
       const randomIndex = Math.floor(Math.random() * availableSongs.length);
       const selectedSong = availableSongs[randomIndex];
 
-      // Song aus der temporären Liste entfernen
       availableSongs.splice(randomIndex, 1);
-
-      // ID in die Liste der gespielten Songs aufnehmen und im LocalStorage speichern
       playedSongIds.push(selectedSong.id);
       localStorage.setItem(STORAGE_KEY, JSON.stringify(playedSongIds));
 
-      // Daten in das HTML eintragen
       artistDisplay.innerText = selectedSong.artist;
       titleDisplay.innerText = selectedSong.title;
       yearDisplay.innerText = selectedSong.year;
@@ -156,18 +170,16 @@
       showScreen(songScreen);
     }
 
-    // --- 6. RESET-LOGIK ---
+    // --- RESET-LOGIK ---
     function resetGame() {
       const confirmReset = confirm("Möchtest du das Spiel wirklich zurücksetzen? Alle bisher gespielten Songs werden wieder verfügbar.");
       if (confirmReset) {
-        // Speicher leeren
         localStorage.removeItem(STORAGE_KEY);
-        // Seite neu laden, um Variablen und UI komplett frisch zu initialisieren
         location.reload();
       }
     }
 
-    // --- 7. EVENT LISTENER ---
+    // --- EVENT LISTENER ---
     startBtn.addEventListener('click', startCountdown);
     nextBtn.addEventListener('click', startCountdown);
     resetBtn.addEventListener('click', resetGame);
