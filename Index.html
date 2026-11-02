@@ -14,6 +14,7 @@
     button:disabled { background: #555; box-shadow: none; cursor: not-allowed; color: #aaa; }
     
     .btn-danger { background: #d32f2f; box-shadow: 0 4px 15px rgba(211, 47, 47, 0.4); margin-top: 15px; padding: 15px 30px; font-size: 1.2rem; }
+    .btn-spotify { background: #191414; box-shadow: 0 4px 15px rgba(25, 20, 20, 0.4); margin-bottom: 20px;}
     
     h1 { font-size: 5rem; margin: 0; color: #1DB954; }
     h2 { font-size: 3rem; margin: 10px 0; color: #ffffff; }
@@ -28,7 +29,6 @@
 
   <!-- 1. Startbildschirm -->
   <div id="start-screen" class="screen">
-    <!-- Button ist anfangs deaktiviert -->
     <button id="start-btn" disabled>Lade Songs...</button>
     <p>Handy nach Klick sofort umdrehen!</p>
     <div id="status-display" class="status-text">Suche nach songs.json...</div>
@@ -46,18 +46,20 @@
     <h3 id="artist-display">Interpret</h3>
     <h2 id="title-display">Titel</h2>
     <div class="year" id="year-display">1900</div>
+    
+    <!-- Button falls der automatische Aufruf blockiert wird -->
+    <button id="spotify-btn" class="btn-spotify">🎵 In Spotify öffnen</button>
+    
     <button id="next-btn">Nächste Karte ziehen</button>
     <p>Handy nach Klick sofort umdrehen!</p>
   </div>
 
   <script>
-    // Globale Variablen anlegen (leer starten)
     let songDB = [];
     let availableSongs = [];
     let playedSongIds = [];
     const STORAGE_KEY = 'customHitsterPlayedSongs';
 
-    // --- DOM-ELEMENTE VERKNÜPFEN ---
     const startScreen = document.getElementById('start-screen');
     const countdownScreen = document.getElementById('countdown-screen');
     const songScreen = document.getElementById('song-screen');
@@ -66,6 +68,7 @@
     const startBtn = document.getElementById('start-btn');
     const nextBtn = document.getElementById('next-btn');
     const resetBtn = document.getElementById('reset-btn');
+    const spotifyBtn = document.getElementById('spotify-btn');
     
     const artistDisplay = document.getElementById('artist-display');
     const titleDisplay = document.getElementById('title-display');
@@ -75,34 +78,26 @@
     // --- JSON LADEN UND INITIALISIEREN ---
     async function loadSongsData() {
       try {
-        // 1. JSON-Datei anfragen
         const response = await fetch('songs.json');
-        
-        if (!response.ok) {
-          throw new Error('Netzwerk-Fehler oder Datei nicht gefunden');
-        }
-        
-        // 2. Antwort in ein Array umwandeln
+        if (!response.ok) throw new Error('Netzwerk-Fehler oder Datei nicht gefunden');
         const rawSongs = await response.json();
 
-        // 3. Automatische ID-Generierung anwenden
+        // Übernahme der URI aus dem JSON
         songDB = rawSongs.map(song => {
           const uniqueId = (song.artist + song.title).toLowerCase().replace(/[^a-z0-9]/g, '');
           return { 
             id: uniqueId, 
             artist: song.artist, 
             title: song.title, 
-            year: song.year 
+            year: song.year,
+            uri: song.uri // <-- URI wird gespeichert
           };
         });
 
-        // 4. LocalStorage prüfen und filtern
         playedSongIds = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
         availableSongs = songDB.filter(song => !playedSongIds.includes(song.id));
 
-        // 5. UI aktualisieren & Button freigeben
         updateStatusUI();
-        
       } catch (error) {
         console.error("Fehler beim Laden der JSON:", error);
         statusDisplay.innerText = "Fehler: songs.json konnte nicht geladen werden.";
@@ -112,17 +107,15 @@
 
     function updateStatusUI() {
       statusDisplay.innerText = `Noch ${availableSongs.length} von ${songDB.length} Songs verfügbar`;
-      
       if (availableSongs.length > 0) {
         startBtn.innerText = "Spiel starten";
-        startBtn.disabled = false; // Button klickbar machen
+        startBtn.disabled = false;
       } else {
         startBtn.innerText = "Alle Songs gespielt";
         startBtn.disabled = true;
       }
     }
 
-    // Direkt beim Start der Seite die Lade-Funktion aufrufen
     loadSongsData();
 
     // --- ABLAUF-LOGIK ---
@@ -167,7 +160,18 @@
       titleDisplay.innerText = selectedSong.title;
       yearDisplay.innerText = selectedSong.year;
 
+      // Verknüpfe den Button mit der exakten Spotify URI
+      spotifyBtn.onclick = function() {
+        // window.location.href versucht die App direkt zu öffnen
+        window.location.href = selectedSong.uri; 
+      };
+
       showScreen(songScreen);
+      
+      // Optional: Versucht Spotify automatisch zu öffnen, wenn der Countdown abläuft.
+      // (Kann von einigen mobilen Browsern als Pop-Up blockiert werden,
+      //  daher bleibt der Button als Fallback).
+      window.location.href = selectedSong.uri;
     }
 
     // --- RESET-LOGIK ---
