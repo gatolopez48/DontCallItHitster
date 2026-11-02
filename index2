@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Custom Hitster</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- 1. Startbildschirm -->
+  <div id="start-screen" class="screen">
+    <button id="start-btn" disabled>Lade Songs...</button>
+    <p>Handy nach Klick sofort umdrehen!</p>
+    <div id="status-display" class="status-text">Suche nach songs.json...</div>
+    <button id="reset-btn" class="btn-danger">Spiel zurücksetzen</button>
+  </div>
+
+  <!-- 2. Countdown-Bildschirm -->
+  <div id="countdown-screen" class="screen hidden">
+    <h1 id="timer">3</h1>
+    <p>Jetzt umdrehen!</p>
+  </div>
+
+  <!-- 3. Auflösung / Song-Info-Bildschirm -->
+  <div id="song-screen" class="screen hidden">
+    <h3 id="artist-display">Interpret</h3>
+    <h2 id="title-display">Titel</h2>
+    <div class="year" id="year-display">1900</div>
+    
+    <!-- Button falls der automatische Aufruf blockiert wird -->
+    <button id="spotify-btn" class="btn-spotify">🎵 In Spotify öffnen</button>
+    
+    <button id="next-btn">Nächste Karte ziehen</button>
+    <p>Handy nach Klick sofort umdrehen!</p>
+  </div>
+
+  <script type="module" src="main.js"></script>
+</body>
+</html>
