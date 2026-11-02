@@ -23,7 +23,7 @@ function startCountdown() {
   }
 
   showScreen('countdown-screen');
-  let timeLeft = 3;
+  let timeLeft = 2;
   updateTimerUI(timeLeft);
 
   const countdownInterval = setInterval(() => {
