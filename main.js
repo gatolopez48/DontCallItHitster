@@ -62,17 +62,36 @@ openSettingsBtn.addEventListener('click', () => {
 });
 
 // Einstellungen speichern und zurück zum Start
-saveSettingsBtn.addEventListener('click', async () => {
-  const startYear = parseInt(document.getElementById('setting-start-year').value);
-  const endYear = parseInt(document.getElementById('setting-end-year').value);
-  
-  saveSettings({ startYear, endYear });
-  
-  // Daten anhand der neuen Filter neu laden und UI aktualisieren
-  await initData(); 
-  updateStatusUI(getAvailableCount(), getTotalCount());
-  
-  showScreen('start-screen');
+saveSettingsBtn.addEventListener('click', async (event) => {
+  // 1. Verhindert, dass ein Formular die Seite neu lädt (falls der Button in einem <form> liegt)
+  event.preventDefault(); 
+
+  try {
+    // 2. Elemente abrufen und prüfen, ob sie wirklich existieren
+    const startInput = document.getElementById('setting-start-year');
+    const endInput = document.getElementById('setting-end-year');
+    
+    if (!startInput || !endInput) {
+      throw new Error("Ein Input-Feld (setting-start-year oder setting-end-year) fehlt im HTML!");
+    }
+
+    const startYear = parseInt(startInput.value);
+    const endYear = parseInt(endInput.value);
+    
+    saveSettings({ startYear, endYear });
+    
+    // Daten anhand der neuen Filter neu laden und UI aktualisieren
+    await initData(); 
+    updateStatusUI(getAvailableCount(), getTotalCount());
+    
+    // Screen wechseln
+    showScreen('start-screen');
+    
+  } catch (error) {
+    // 3. Fehler abfangen und in der Konsole sowie als Alert anzeigen
+    console.error("Fehler beim Speichern:", error);
+    alert("Fehler beim Speichern:\n" + error.message);
+  }
 });
 
 // App initialisieren
