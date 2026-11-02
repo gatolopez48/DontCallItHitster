@@ -23,7 +23,7 @@ function startCountdown() {
   }
 
   showScreen('countdown-screen');
-  let timeLeft = 2;
+  let timeLeft = 3;
   updateTimerUI(timeLeft);
 
   const countdownInterval = setInterval(() => {
@@ -36,7 +36,7 @@ function startCountdown() {
       displaySong(song);
       showScreen('song-screen');
     }
-  }, 1000);
+  }, 500);
 }
 
 function resetGame() {
