@@ -5,41 +5,42 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <title>Custom Hitster</title>
   <style>
-    /* Grundlegendes Styling für eine App-ähnliche, dunkle Oberfläche */
     body { background: #121212; color: #ffffff; font-family: sans-serif; margin: 0; height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
-    /* Screen-Klasse zentriert den Inhalt des jeweiligen Bildschirms */
     .screen { display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100%; }
-    /* Hilfsklasse zum Ausblenden inaktiver Bildschirme */
     .hidden { display: none !important; }
     
-    /* Button-Design (ähnlich wie Spotify/Hitster) */
-    button { background: #1DB954; color: white; border: none; padding: 25px 50px; font-size: 1.5rem; border-radius: 50px; cursor: pointer; font-weight: bold; box-shadow: 0 4px 15px rgba(29, 185, 84, 0.4); margin-top: 30px; transition: 0.3s; }
+    button { background: #1DB954; color: white; border: none; padding: 25px 50px; font-size: 1.5rem; border-radius: 50px; cursor: pointer; font-weight: bold; box-shadow: 0 4px 15px rgba(29, 185, 84, 0.4); margin-top: 30px; transition: 0.3s; width: 80%; max-width: 400px; }
     button:active:not(:disabled) { transform: scale(0.95); }
     button:disabled { background: #555; box-shadow: none; cursor: not-allowed; color: #aaa; }
     
-    /* Typografie */
+    .btn-danger { background: #d32f2f; box-shadow: 0 4px 15px rgba(211, 47, 47, 0.4); margin-top: 15px; padding: 15px 30px; font-size: 1.2rem; }
+    
     h1 { font-size: 5rem; margin: 0; color: #1DB954; }
     h2 { font-size: 3rem; margin: 10px 0; color: #ffffff; }
     h3 { font-size: 2rem; margin: 10px 0; color: #b3b3b3; }
     .year { font-size: 4rem; color: #1DB954; font-weight: bold; margin-top: 20px; }
     p { font-size: 1.5rem; color: #b3b3b3; margin-top: 20px; }
+    
+    .status-text { font-size: 1rem; color: #888; margin-top: 10px; }
   </style>
 </head>
 <body>
 
-  <!-- 1. Startbildschirm: Wird beim ersten Laden der Seite angezeigt -->
+  <!-- 1. Startbildschirm -->
   <div id="start-screen" class="screen">
     <button id="start-btn">Spiel starten</button>
     <p>Handy nach Klick sofort umdrehen!</p>
+    <div id="status-display" class="status-text">Geladene Songs: 0</div>
+    <button id="reset-btn" class="btn-danger">Spiel zurücksetzen</button>
   </div>
 
-  <!-- 2. Countdown-Bildschirm: Gibt den Spielern Zeit, das Handy umzudrehen -->
+  <!-- 2. Countdown-Bildschirm -->
   <div id="countdown-screen" class="screen hidden">
     <h1 id="timer">3</h1>
     <p>Jetzt umdrehen!</p>
   </div>
 
-  <!-- 3. Auflösung / Song-Info-Bildschirm: Zeigt das Jahr und den Song an -->
+  <!-- 3. Auflösung / Song-Info-Bildschirm -->
   <div id="song-screen" class="screen hidden">
     <h3 id="artist-display">Interpret</h3>
     <h2 id="title-display">Titel</h2>
@@ -50,49 +51,127 @@
 
   <script>
     // --- 1. DATENBANK ---
-    // Hier werden die Songs gespeichert. In einer echten App könnten diese aus einer JSON-Datei geladen werden.
+    // Hier kannst du deine Songs im normalen Format einfügen, ohne manuell IDs zu vergeben
     let songDB = [
       { artist: "Nena", title: "99 Luftballons", year: 1983 },
       { artist: "Queen", title: "Bohemian Rhapsody", year: 1975 },
       { artist: "The Weeknd", title: "Blinding Lights", year: 2019 },
-      { artist: "Nirvana", title: "Smells Like Teen Spirit", year: 1991 }
+      { artist: "Nirvana", title: "Smells Like Teen Spirit", year: 1991 },
+      { artist: "Falco", title: "Rock Me Amadeus", year: 1985 }
     ];
 
-    // --- 2. DOM-ELEMENTE VERKNÜPFEN ---
-    // Referenzen zu den HTML-Containern der drei Bildschirme
+    // --- 2. AUTOMATISCHE ID-GENERIERUNG ---
+    // Erstellt aus Interpret und Titel eine einzigartige, unveränderliche ID (z.B. "nena99luftballons")
+    songDB = songDB.map(song => {
+      const uniqueId = (song.artist + song.title).toLowerCase().replace(/[^a-z0-9]/g, '');
+      return { 
+        id: uniqueId, 
+        artist: song.artist, 
+        title: song.title, 
+        year: song.year 
+      };
+    });
+
+    // --- 3. DOM-ELEMENTE VERKNÜPFEN ---
     const startScreen = document.getElementById('start-screen');
     const countdownScreen = document.getElementById('countdown-screen');
     const songScreen = document.getElementById('song-screen');
     
-    // Referenzen zu interaktiven Elementen und Textfeldern
     const timerElement = document.getElementById('timer');
     const startBtn = document.getElementById('start-btn');
     const nextBtn = document.getElementById('next-btn');
+    const resetBtn = document.getElementById('reset-btn');
     
     const artistDisplay = document.getElementById('artist-display');
     const titleDisplay = document.getElementById('title-display');
     const yearDisplay = document.getElementById('year-display');
+    const statusDisplay = document.getElementById('status-display');
 
-    // --- 3. LOGIK & ABLAUF ---
+    // --- 4. SPEICHER-LOGIK (LocalStorage) ---
+    const STORAGE_KEY = 'customHitsterPlayedSongs';
+    
+    // Gespielte Song-IDs aus dem Speicher laden (oder leeres Array, falls neu)
+    let playedSongIds = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+    
+    // Liste der noch verfügbaren Songs filtern
+    let availableSongs = songDB.filter(song => !playedSongIds.includes(song.id));
 
-    // Funktion: Wechselt zwischen den Bildschirmen
+    // UI-Update beim Start: Zeige an, wie viele Songs noch übrig sind
+    function updateStatusUI() {
+      statusDisplay.innerText = `Noch ${availableSongs.length} von ${songDB.length} Songs verfügbar`;
+      if (availableSongs.length === 0) {
+        startBtn.disabled = true;
+        startBtn.innerText = "Alle Songs gespielt";
+      }
+    }
+    updateStatusUI();
+
+    // --- 5. ABLAUF-LOGIK ---
     function showScreen(screenToShow) {
-      // Alle Bildschirme verstecken
       startScreen.classList.add('hidden');
       countdownScreen.classList.add('hidden');
       songScreen.classList.add('hidden');
-      
-      // Nur den gewünschten Bildschirm anzeigen
       screenToShow.classList.remove('hidden');
     }
 
-    // Funktion: Startet den 3-Sekunden-Countdown
     function startCountdown() {
-      showScreen(countdownScreen); // Wechsle zum Countdown-Screen
-      let timeLeft = 3;
-      timerElement.innerText = timeLeft; // Timer auf 3 setzen
+      if (availableSongs.length === 0) {
+        alert("Alle Songs wurden bereits gespielt! Setze das Spiel zurück.");
+        showScreen(startScreen);
+        return;
+      }
 
-      // Interval, das jede Sekunde feuert
+      showScreen(countdownScreen);
+      let timeLeft = 3;
+      timerElement.innerText = timeLeft;
+
       const countdownInterval = setInterval(() => {
         timeLeft--;
-        
+        if (timeLeft > 0) {
+          timerElement.innerText = timeLeft;
+        } else {
+          clearInterval(countdownInterval);
+          showRandomSong();
+        }
+      }, 1000);
+    }
+
+    function showRandomSong() {
+      // Zufälligen Index aus den noch verfügbaren Songs wählen
+      const randomIndex = Math.floor(Math.random() * availableSongs.length);
+      const selectedSong = availableSongs[randomIndex];
+
+      // Song aus der temporären Liste entfernen
+      availableSongs.splice(randomIndex, 1);
+
+      // ID in die Liste der gespielten Songs aufnehmen und im LocalStorage speichern
+      playedSongIds.push(selectedSong.id);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(playedSongIds));
+
+      // Daten in das HTML eintragen
+      artistDisplay.innerText = selectedSong.artist;
+      titleDisplay.innerText = selectedSong.title;
+      yearDisplay.innerText = selectedSong.year;
+
+      showScreen(songScreen);
+    }
+
+    // --- 6. RESET-LOGIK ---
+    function resetGame() {
+      const confirmReset = confirm("Möchtest du das Spiel wirklich zurücksetzen? Alle bisher gespielten Songs werden wieder verfügbar.");
+      if (confirmReset) {
+        // Speicher leeren
+        localStorage.removeItem(STORAGE_KEY);
+        // Seite neu laden, um Variablen und UI komplett frisch zu initialisieren
+        location.reload();
+      }
+    }
+
+    // --- 7. EVENT LISTENER ---
+    startBtn.addEventListener('click', startCountdown);
+    nextBtn.addEventListener('click', startCountdown);
+    resetBtn.addEventListener('click', resetGame);
+
+  </script>
+</body>
+</html>
