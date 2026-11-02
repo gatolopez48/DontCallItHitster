@@ -7,32 +7,52 @@ let availableSongs = [];
 let playedSongIds = [];
 
 export async function initData() {
-  const response = await fetch('songs.json');
-  if (!response.ok) throw new Error('Netzwerk-Fehler oder Datei nicht gefunden');
-  const rawSongs = await response.json();
+  try {
+    const response = await fetch('songs.json');
+    if (!response.ok) throw new Error(`Netzwerk-Fehler: ${response.status}`);
+    const rawSongs = await response.json();
 
-  // Rohe Songdaten in die Datenbank laden
-  songDB = rawSongs.map(song => {
-    const uniqueId = (song.artist + song.title).toLowerCase().replace(/[^a-z0-9]/g, '');
-    return { 
-      id: uniqueId, 
-      artist: song.artist, 
-      title: song.title, 
-      year: song.year,
-      uri: song.uri 
-    };
-  });
+    // Absicherung: Ist rawSongs wirklich ein Array?
+    if (!Array.isArray(rawSongs)) throw new Error('songs.json enthält kein Array');
 
-  // Gespielte Songs aus dem LocalStorage abrufen
-  playedSongIds = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
-  
-  // Songs filtern: Darf noch nicht gespielt sein UND muss im eingestellten Zeitraum liegen
-  availableSongs = songDB.filter(song => {
-    const notPlayed = !playedSongIds.includes(song.id);
-    const inYearRange = song.year >= currentSettings.startYear && song.year <= currentSettings.endYear;
+    songDB = rawSongs.map(song => {
+      const uniqueId = (song.artist + song.title).toLowerCase().replace(/[^a-z0-9]/g, '');
+      return { 
+        id: uniqueId, 
+        artist: song.artist, 
+        title: song.title, 
+        year: Number(song.year), // Sicherstellen, dass es eine Zahl ist
+        uri: song.uri 
+      };
+    });
+
+    // Absicherung: Try-Catch für den LocalStorage
+    try {
+      playedSongIds = JSON.parse(localStorage.getItem(STORAGE_KEY));
+      // Falls der Storage leer war oder kein Array ist, auf [] setzen
+      if (!Array.isArray(playedSongIds)) playedSongIds = [];
+    } catch (e) {
+      console.warn('LocalStorage war korrupt. Gespielte Songs werden zurückgesetzt.', e);
+      playedSongIds = [];
+    }
     
-    return notPlayed && inYearRange;
-  });
+    // Songs filtern
+    availableSongs = songDB.filter(song => {
+      const notPlayed = !playedSongIds.includes(song.id);
+      
+      // Auch bei den Settings sicherstellen, dass wir mit echten Zahlen rechnen
+      const start = Number(currentSettings.startYear) || 0;
+      const end = Number(currentSettings.endYear) || 9999;
+      const inYearRange = song.year >= start && song.year <= end;
+      
+      return notPlayed && inYearRange;
+    });
+
+    console.log(`${availableSongs.length} von ${songDB.length} Songs geladen.`);
+
+  } catch (error) {
+    console.error('Kritischer Fehler beim Laden der Songs:', error);
+  }
 }
 
 export function getAvailableCount() {
@@ -40,7 +60,6 @@ export function getAvailableCount() {
 }
 
 export function getTotalCount() {
-  // Gibt die Gesamtzahl aller geladenen Songs zurück (unabhängig vom Filter)
   return songDB.length;
 }
 
@@ -50,11 +69,9 @@ export function drawRandomSong() {
   const randomIndex = Math.floor(Math.random() * availableSongs.length);
   const selectedSong = availableSongs[randomIndex];
 
-  // Song aus den verfügbaren entfernen und zu den gespielten hinzufügen
   availableSongs.splice(randomIndex, 1);
   playedSongIds.push(selectedSong.id);
   
-  // Gespielte Songs dauerhaft speichern
   localStorage.setItem(STORAGE_KEY, JSON.stringify(playedSongIds));
 
   return selectedSong;
@@ -62,4 +79,5 @@ export function drawRandomSong() {
 
 export function resetData() {
   localStorage.removeItem(STORAGE_KEY);
+  playedSongIds = []; // WICHTIG: Auch den lokalen Array leeren!
 }
