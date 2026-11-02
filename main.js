@@ -36,7 +36,7 @@ function startCountdown() {
       displaySong(song);
       showScreen('song-screen');
     }
-  }, 500);
+  }, 1000);
 }
 
 function resetGame() {
