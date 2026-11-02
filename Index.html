@@ -5,12 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <title>Custom Hitster</title>
   <style>
+    /* Grundlegendes Styling für eine App-ähnliche, dunkle Oberfläche */
     body { background: #121212; color: #ffffff; font-family: sans-serif; margin: 0; height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+    /* Screen-Klasse zentriert den Inhalt des jeweiligen Bildschirms */
     .screen { display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100%; }
+    /* Hilfsklasse zum Ausblenden inaktiver Bildschirme */
     .hidden { display: none !important; }
+    
+    /* Button-Design (ähnlich wie Spotify/Hitster) */
     button { background: #1DB954; color: white; border: none; padding: 25px 50px; font-size: 1.5rem; border-radius: 50px; cursor: pointer; font-weight: bold; box-shadow: 0 4px 15px rgba(29, 185, 84, 0.4); margin-top: 30px; transition: 0.3s; }
     button:active:not(:disabled) { transform: scale(0.95); }
     button:disabled { background: #555; box-shadow: none; cursor: not-allowed; color: #aaa; }
+    
+    /* Typografie */
     h1 { font-size: 5rem; margin: 0; color: #1DB954; }
     h2 { font-size: 3rem; margin: 10px 0; color: #ffffff; }
     h3 { font-size: 2rem; margin: 10px 0; color: #b3b3b3; }
@@ -20,19 +27,19 @@
 </head>
 <body>
 
-  <!-- 1. Startbildschirm -->
+  <!-- 1. Startbildschirm: Wird beim ersten Laden der Seite angezeigt -->
   <div id="start-screen" class="screen">
-    <button id="start-btn" disabled>Lade Songs...</button>
+    <button id="start-btn">Spiel starten</button>
     <p>Handy nach Klick sofort umdrehen!</p>
   </div>
 
-  <!-- 2. Countdown-Bildschirm -->
+  <!-- 2. Countdown-Bildschirm: Gibt den Spielern Zeit, das Handy umzudrehen -->
   <div id="countdown-screen" class="screen hidden">
     <h1 id="timer">3</h1>
     <p>Jetzt umdrehen!</p>
   </div>
 
-  <!-- 3. Auflösung / Song-Info-Bildschirm -->
+  <!-- 3. Auflösung / Song-Info-Bildschirm: Zeigt das Jahr und den Song an -->
   <div id="song-screen" class="screen hidden">
     <h3 id="artist-display">Interpret</h3>
     <h2 id="title-display">Titel</h2>
@@ -42,12 +49,22 @@
   </div>
 
   <script>
-    let songDB = [];
+    // --- 1. DATENBANK ---
+    // Hier werden die Songs gespeichert. In einer echten App könnten diese aus einer JSON-Datei geladen werden.
+    let songDB = [
+      { artist: "Nena", title: "99 Luftballons", year: 1983 },
+      { artist: "Queen", title: "Bohemian Rhapsody", year: 1975 },
+      { artist: "The Weeknd", title: "Blinding Lights", year: 2019 },
+      { artist: "Nirvana", title: "Smells Like Teen Spirit", year: 1991 }
+    ];
 
+    // --- 2. DOM-ELEMENTE VERKNÜPFEN ---
+    // Referenzen zu den HTML-Containern der drei Bildschirme
     const startScreen = document.getElementById('start-screen');
     const countdownScreen = document.getElementById('countdown-screen');
     const songScreen = document.getElementById('song-screen');
     
+    // Referenzen zu interaktiven Elementen und Textfeldern
     const timerElement = document.getElementById('timer');
     const startBtn = document.getElementById('start-btn');
     const nextBtn = document.getElementById('next-btn');
@@ -56,64 +73,26 @@
     const titleDisplay = document.getElementById('title-display');
     const yearDisplay = document.getElementById('year-display');
 
-    // JSON-Datei laden
-    fetch('songs.json')
-      .then(response => {
-        if (!response.ok) throw new Error("Netzwerkfehler");
-        return response.json();
-      })
-      .then(data => {
-        songDB = data;
-        // Button aktivieren, sobald die Daten da sind
-        startBtn.disabled = false;
-        startBtn.innerText = "Spiel starten";
-      })
-      .catch(error => {
-        console.error("Fehler beim Laden der songs.json:", error);
-        startBtn.innerText = "Fehler beim Laden";
-      });
+    // --- 3. LOGIK & ABLAUF ---
 
-    function startRound() {
-      if (songDB.length === 0) return; // Sicherheitshalber abbrechen, falls leer
-
-      // 1. Zufälligen neuen Song auswählen
-      const currentSong = songDB[Math.floor(Math.random() * songDB.length)];
-      
-      // 2. Ansicht auf Countdown wechseln
+    // Funktion: Wechselt zwischen den Bildschirmen
+    function showScreen(screenToShow) {
+      // Alle Bildschirme verstecken
       startScreen.classList.add('hidden');
+      countdownScreen.classList.add('hidden');
       songScreen.classList.add('hidden');
-      countdownScreen.classList.remove('hidden');
       
-      let timeLeft = 3;
-      timerElement.innerText = timeLeft;
-
-      // 3. Countdown herunterzählen
-      const countdown = setInterval(() => {
-        timeLeft--;
-        if (timeLeft > 0) {
-          timerElement.innerText = timeLeft;
-        } else {
-          clearInterval(countdown);
-          
-          // 4. Deep-Link feuert, Spotify öffnet sich
-          window.location.href = currentSong.uri;
-          
-          // 5. Während Spotify im Vordergrund ist, baut sich im Hintergrund die Auflösung auf
-          setTimeout(() => {
-            countdownScreen.classList.add('hidden');
-            songScreen.classList.remove('hidden');
-            
-            // Song-Daten ins HTML eintragen
-            artistDisplay.innerText = currentSong.artist;
-            titleDisplay.innerText = currentSong.title;
-            yearDisplay.innerText = currentSong.year;
-          }, 1000);
-        }
-      }, 1000);
+      // Nur den gewünschten Bildschirm anzeigen
+      screenToShow.classList.remove('hidden');
     }
 
-    startBtn.addEventListener('click', startRound);
-    nextBtn.addEventListener('click', startRound);
-  </script>
-</body>
-</html>
+    // Funktion: Startet den 3-Sekunden-Countdown
+    function startCountdown() {
+      showScreen(countdownScreen); // Wechsle zum Countdown-Screen
+      let timeLeft = 3;
+      timerElement.innerText = timeLeft; // Timer auf 3 setzen
+
+      // Interval, das jede Sekunde feuert
+      const countdownInterval = setInterval(() => {
+        timeLeft--;
+        
